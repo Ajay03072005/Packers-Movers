@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin - Blogs</title>
+</head>
+<body>
+  <h1>Blog Management</h1>
+
+  <form id="blogForm">
+    <input type="text" name="title" placeholder="Blog Title" required><br><br>
+    <textarea name="content" placeholder="Blog Content" required></textarea><br><br>
+    <button type="submit">Submit Blog</button>
+  </form>
+
+  <hr>
+
+  <h2>Existing Blogs</h2>
+  <ul id="blogList"></ul>
+
+  <script>
+    // Load existing blogs
+    fetch('/admin/blogs')
+      .then(res => res.json())
+      .then(data => {
+        const list = document.getElementById('blogList');
+        data.forEach(blog => {
+          const li = document.createElement('li');
+          li.textContent = `${blog.title} - ${blog.content}`;
+          list.appendChild(li);
+        });
+      });
+
+    // Handle form submission
+    document.getElementById('blogForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+      fetch('/admin/blogs', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title: formData.get('title'),
+          content: formData.get('content')
+        })
+      }).then(res => res.text()).then(msg => {
+        alert(msg);
+        location.reload();
+      });
+    });
+  </script>
+</body>
+</html>
