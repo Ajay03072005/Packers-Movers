@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Packer & Movers - Reviews</title>
+</head>
+<body>
+  <h2>Submit Your Review</h2>
+  <form id="reviewForm">
+    <input type="text" id="name" placeholder="Your Name" required /><br><br>
+    <textarea id="review" placeholder="Write your review here" required></textarea><br><br>
+    <button type="submit">Submit Review</button>
+  </form>
+
+  <h2>Customer Reviews</h2>
+  <div id="reviews"></div>
+
+  <script>
+    // Submit review
+    document.getElementById('reviewForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('name').value;
+      const review = document.getElementById('review').value;
+
+      const res = await fetch('/submit-review', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, review })
+      });
+
+      const msg = await res.text();
+      alert(msg);
+      loadReviews();
+    });
+
+    // Load reviews
+    async function loadReviews() {
+      const res = await fetch('/get-reviews');
+      const data = await res.json();
+      const container = document.getElementById('reviews');
+      container.innerHTML = data.map(r =>
+        `<p><strong>${r.name}</strong> (${new Date(r.created_at).toLocaleString()}):<br>${r.review}</p><hr>`
+      ).join('');
+    }
+
+    loadReviews();
+  </script>
+</body>
+</html>

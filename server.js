@@ -56,7 +56,7 @@ app.get('/admin/login', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'admin', 'login.html'));
 });
 
-// ✅ Admin Login POST
+// Admin Login POST
 app.post('/admin/login', (req, res) => {
   const { username, password } = req.body;
   if (username === 'admin' && password === 'admin123') {
@@ -70,7 +70,7 @@ app.post('/admin/login', (req, res) => {
   }
 });
 
-// Admin dashboard
+// Admin Dashboard
 app.get('/admin/dashboard', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'admin', 'dashboard.html'));
 });
@@ -83,16 +83,18 @@ app.get('/admin/enquiries', (req, res) => {
   });
 });
 
-// Reviews API
+// Reviews API (GET for admin dashboard)
 app.get('/admin/reviews', (req, res) => {
-  packersDB.query('SELECT * FROM reviews', (err, results) => {
+  packersDB.query('SELECT * FROM reviews ORDER BY created_at DESC', (err, results) => {
     if (err) return res.status(500).json({ error: 'DB Error' });
     res.json(results);
   });
 });
 
+// Submit review (public)
 app.post('/submit-review', (req, res) => {
   const { name, review } = req.body;
+  if (!name || !review) return res.status(400).send('Name and review are required');
   packersDB.query(
     'INSERT INTO reviews (name, review) VALUES (?, ?)',
     [name, review],
@@ -103,9 +105,17 @@ app.post('/submit-review', (req, res) => {
   );
 });
 
+// Fetch public reviews (e.g., to display on homepage)
+app.get('/reviews', (req, res) => {
+  packersDB.query('SELECT * FROM reviews ORDER BY created_at DESC', (err, results) => {
+    if (err) return res.status(500).json({ error: 'Error fetching reviews' });
+    res.json(results);
+  });
+});
+
 // Blogs API
 app.get('/admin/blogs', (req, res) => {
-  packersDB.query('SELECT * FROM blogs', (err, results) => {
+  packersDB.query('SELECT * FROM blogs ORDER BY created_at DESC', (err, results) => {
     if (err) return res.status(500).json({ error: 'DB Error' });
     res.json(results);
   });

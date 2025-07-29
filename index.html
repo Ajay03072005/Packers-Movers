@@ -6,6 +6,9 @@
   <title>Packer & Movers</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
   <style>
+    html {
+      scroll-behavior: smooth;
+    }
     * {
       margin: 0; padding: 0; box-sizing: border-box;
     }
@@ -13,87 +16,103 @@
       font-family: 'Segoe UI', sans-serif;
       background: #fff5f5;
       color: #660000;
+      animation: fadeInBody 1s ease-in-out;
     }
 
+    @keyframes fadeInBody {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes slideInUp {
+      0% { opacity: 0; transform: translateY(40px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
 
-header {
-  background: #b30000;
-  color: white;
-  width: 100%;
-}
+    header {
+      background: #b30000;
+      color: white;
+      width: 100%;
+    }
 
-.container {
-  width: 90%;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-.header-inner {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 0;
-  flex-wrap: wrap;
-}
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
 
-.logo {
-  font-size: 1.75rem;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-}
+    .header-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+      flex-wrap: wrap;
+    }
 
-nav {
-  flex: 1;
-}
+    .logo {
+      font-size: 1.75rem;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+    }
 
-.nav-menu {
-  list-style: none;
-  display: flex;
-  justify-content: flex-end;
-  gap: 1.5rem;
-  margin: 0;
-  padding: 0;
-}
+    nav {
+      flex: 1;
+    }
 
-.nav-menu li a {
-  color: white;
-  text-decoration: none;
-  font-weight: 500;
-}
+    .nav-menu {
+      list-style: none;
+      display: flex;
+      justify-content: flex-end;
+      gap: 1.5rem;
+      margin: 0;
+      padding: 0;
+    }
 
-.nav-menu li a:hover {
-  color: #ffd6d6;
-}
-.menu-toggle {
-  display: none;
-  font-size: 1.8rem;
-  color: white;
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-@media (max-width: 768px) {
-  .menu-toggle {
-    display: block;
-  }
+    .nav-menu li a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+    }
 
-  nav {
-    width: 100%;
-  }
+    .nav-menu li a:hover {
+      color: #ffd6d6;
+    }
 
-  .nav-menu {
-    flex-direction: column;
-    align-items: center;
-    background: #b30000;
-    width: 100%;
-    display: none;
-    padding: 1rem 0;
-  }
+    .menu-toggle {
+      display: none;
+      font-size: 1.8rem;
+      color: white;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
 
-  .nav-menu.show {
-    display: flex;
-  }
-}
+    @media (max-width: 768px) {
+      .menu-toggle {
+        display: block;
+      }
+
+      nav {
+        width: 100%;
+      }
+
+      .nav-menu {
+        flex-direction: column;
+        align-items: center;
+        background: #b30000;
+        width: 100%;
+        display: none;
+        padding: 1rem 0;
+      }
+
+      .nav-menu.show {
+        display: flex;
+      }
+    }
 
     .hero {
       background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
@@ -101,6 +120,7 @@ nav {
       color: white;
       text-align: center;
       padding: 5rem 2rem;
+      animation: slideInUp 1s ease forwards;
     }
     .hero h1 {
       font-size: 3rem;
@@ -117,22 +137,44 @@ nav {
       border-radius: 5px;
       text-decoration: none;
       font-weight: bold;
+      animation: pulse 2s infinite;
+      transition: transform 0.3s ease;
     }
+    .cta:hover {
+      background: #ffcccc;
+      transform: scale(1.05);
+    }
+
+    .preview-section, .blog-preview, .reviews, .contact-preview, footer {
+      animation: slideInUp 1s ease forwards;
+      opacity: 0;
+      animation-fill-mode: forwards;
+    }
+
+    .preview-section:nth-of-type(2) { animation-delay: 0.2s; }
+    .preview-section:nth-of-type(3) { animation-delay: 0.4s; }
+    .blog-preview { animation-delay: 0.6s; }
+    .reviews { animation-delay: 0.8s; }
+    .contact-preview { animation-delay: 1s; }
+    footer { animation-delay: 1.2s; }
 
     .preview-section {
       padding: 4rem 1rem;
       text-align: center;
     }
+
     .preview-section h2 {
       font-size: 2.25rem;
       color: #b30000;
       margin-bottom: 1rem;
     }
+
     .preview-section p {
       font-size: 1.1rem;
       color: #660000;
       margin-bottom: 1.5rem;
     }
+
     .btn {
       background: #cc0000;
       color: white;
@@ -142,13 +184,21 @@ nav {
       font-weight: bold;
       display: inline-block;
       margin-top: 1rem;
+      transition: transform 0.3s ease;
     }
+
+    .btn:hover {
+      background: #990000;
+      transform: scale(1.05);
+    }
+
     .services-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 2rem;
       margin-top: 2rem;
     }
+
     .service-card {
       background: #ffe6e6;
       padding: 2rem;
@@ -156,7 +206,14 @@ nav {
       color: #800000;
       text-align: center;
       box-shadow: 0 4px 8px rgba(255,0,0,0.1);
+      transition: transform 0.3s ease;
     }
+
+    .service-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 8px 16px rgba(255,0,0,0.2);
+    }
+
     .blog-cards {
       display: flex;
       flex-wrap: wrap;
@@ -164,22 +221,31 @@ nav {
       gap: 2rem;
       margin-top: 2rem;
     }
+
     .blog-card {
       background: #ffe6e6;
       border-radius: 10px;
       width: 300px;
       overflow: hidden;
       box-shadow: 0 4px 6px rgba(255,0,0,0.2);
+      transition: transform 0.3s ease;
     }
+
+    .blog-card:hover {
+      transform: translateY(-8px);
+    }
+
     .blog-card img {
       width: 100%;
       display: block;
     }
+
     .blog-card h4 {
       padding: 1rem;
       font-size: 1.1rem;
       color: #800000;
     }
+
     .blog-card a {
       display: block;
       background: #cc0000;
@@ -195,6 +261,7 @@ nav {
       padding: 4rem 1rem;
       text-align: center;
     }
+
     .review-card, .review-form {
       background: #fff0f0;
       margin: 1rem auto;
@@ -203,10 +270,17 @@ nav {
       border-radius: 10px;
       box-shadow: 0 2px 5px rgba(255,0,0,0.1);
     }
+
+    .review-card:hover {
+      transform: scale(1.02);
+      transition: transform 0.3s ease;
+    }
+
     .review-card h4 {
       color: #b30000;
       margin-bottom: 0.5rem;
     }
+
     .review-form input, .review-form textarea {
       width: 100%;
       padding: 0.75rem;
@@ -214,6 +288,7 @@ nav {
       border: 1px solid #ff9999;
       border-radius: 5px;
     }
+
     .review-form button {
       background: #cc0000;
       color: white;
@@ -230,33 +305,40 @@ nav {
       text-align: center;
       padding: 2rem 1rem;
     }
+
     .social-icons a {
       color: white;
       margin: 0 0.5rem;
       font-size: 1.2rem;
+      transition: transform 0.3s ease;
+    }
+
+    .social-icons a:hover {
+      color: #ffd6d6;
+      transform: scale(1.2);
     }
   </style>
 </head>
 <body>
 
   <header>
-  <div class="container header-inner">
-    <div class="logo">🚚 Packer & Movers</div>
-    <nav>
-      <ul class="nav-menu">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="services.html">Services</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="blog.html">Blog</a></li>
-        <li><a href="contact.html">Contact</a></li>
-      </ul>
-    </nav>
-    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-  </div>
-</header>
+    <div class="container header-inner">
+      <div class="logo">🚚 Packer & Movers</div>
+      <nav>
+        <ul class="nav-menu">
+          <li><a href="#home">Home</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="blog.html">Blog</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="review.html">review</a></li>
+        </ul>
+      </nav>
+      <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    </div>
+  </header>
 
-
-  <section class="hero">
+  <section class="hero" id="home">
     <div class="container">
       <h1>Fast & Secure Relocation Services</h1>
       <p>We move it all with care — home, office, vehicle and more.</p>
@@ -316,11 +398,9 @@ nav {
       </div>
       <div class="review-form">
         <h3 style="color:#b30000; margin-bottom:1rem;">Write a Review</h3>
-       <form action="/submit-review" method="POST">
-          <input type="text" placeholder="Your Name" required>
-          <textarea rows="4" placeholder="Your Review" required></textarea>
-          <button type="submit">Submit Review</button>
-        </form>
+        
+          <button type="submit"><a href="review.html">Submit Review</a></button>
+       
       </div>
     </div>
   </section>
@@ -344,11 +424,11 @@ nav {
     </div>
   </footer>
 
- <script>
-  function toggleMenu() {
-    document.querySelector('.nav-menu').classList.toggle('show');
-  }
-</script>
+  <script>
+    function toggleMenu() {
+      document.querySelector('.nav-menu').classList.toggle('show');
+    }
+  </script>
 
 </body>
 </html>
