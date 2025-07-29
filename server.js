@@ -2,7 +2,6 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const mysql = require('mysql2');
-
 const app = express();
 const PORT = 3000;
 
@@ -11,7 +10,7 @@ app.use(express.static(path.join(__dirname, 'views')));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// Connect to `contactdb`
+// MySQL Connections
 const contactDB = mysql.createConnection({
   host: 'localhost',
   user: 'root',
@@ -19,7 +18,6 @@ const contactDB = mysql.createConnection({
   database: 'contactdb'
 });
 
-// Connect to `packers`
 const packersDB = mysql.createConnection({
   host: 'localhost',
   user: 'root',
@@ -27,39 +25,57 @@ const packersDB = mysql.createConnection({
   database: 'packers'
 });
 
-// Check DB connections
-contactDB.connect((err) => {
+// Connect to MySQL
+contactDB.connect(err => {
   if (err) throw err;
   console.log('Connected to contactdb');
 });
-packersDB.connect((err) => {
+
+packersDB.connect(err => {
   if (err) throw err;
   console.log('Connected to packers db');
 });
 
-// ===== USER ROUTES =====
+// Routes
+
+// Contact form submission
 app.post('/contact', (req, res) => {
   const { name, email, message } = req.body;
   contactDB.query(
     'INSERT INTO contacts (name, email, message) VALUES (?, ?, ?)',
     [name, email, message],
-    (err) => {
+    err => {
       if (err) return res.status(500).send('Failed to save contact');
       res.send('Contact saved successfully!');
     }
   );
 });
 
-// ===== ADMIN ROUTES =====
+// Admin Login GET
 app.get('/admin/login', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'admin', 'login.html'));
 });
 
+// ✅ Admin Login POST
+app.post('/admin/login', (req, res) => {
+  const { username, password } = req.body;
+  if (username === 'admin' && password === 'admin123') {
+    res.redirect('/admin/dashboard');
+  } else {
+    res.send(`
+      <h3 style="text-align:center; color:red; margin-top:50px;">
+        Invalid login. <a href="/admin/login">Try again</a>
+      </h3>
+    `);
+  }
+});
+
+// Admin dashboard
 app.get('/admin/dashboard', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'admin', 'dashboard.html'));
 });
 
-// Enquiries from contactdb
+// Enquiries API
 app.get('/admin/enquiries', (req, res) => {
   contactDB.query('SELECT * FROM contacts', (err, results) => {
     if (err) return res.status(500).json({ error: 'DB Error' });
@@ -67,7 +83,7 @@ app.get('/admin/enquiries', (req, res) => {
   });
 });
 
-// Reviews
+// Reviews API
 app.get('/admin/reviews', (req, res) => {
   packersDB.query('SELECT * FROM reviews', (err, results) => {
     if (err) return res.status(500).json({ error: 'DB Error' });
@@ -77,13 +93,17 @@ app.get('/admin/reviews', (req, res) => {
 
 app.post('/submit-review', (req, res) => {
   const { name, review } = req.body;
-  packersDB.query('INSERT INTO reviews (name, review) VALUES (?, ?)', [name, review], (err) => {
-    if (err) return res.status(500).send('Error saving review');
-    res.send('Review saved');
-  });
+  packersDB.query(
+    'INSERT INTO reviews (name, review) VALUES (?, ?)',
+    [name, review],
+    err => {
+      if (err) return res.status(500).send('Error saving review');
+      res.send('Review saved');
+    }
+  );
 });
 
-// Blogs
+// Blogs API
 app.get('/admin/blogs', (req, res) => {
   packersDB.query('SELECT * FROM blogs', (err, results) => {
     if (err) return res.status(500).json({ error: 'DB Error' });
@@ -93,13 +113,17 @@ app.get('/admin/blogs', (req, res) => {
 
 app.post('/admin/blogs', (req, res) => {
   const { title, content } = req.body;
-  packersDB.query('INSERT INTO blogs (title, content) VALUES (?, ?)', [title, content], (err) => {
-    if (err) return res.status(500).send('Error saving blog');
-    res.send('Blog added');
-  });
+  packersDB.query(
+    'INSERT INTO blogs (title, content) VALUES (?, ?)',
+    [title, content],
+    err => {
+      if (err) return res.status(500).send('Error saving blog');
+      res.send('Blog added');
+    }
+  );
 });
 
-// ===== START SERVER =====
+// Start server
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });
