@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Packer & Movers</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #fff5f5;
+      color: #660000;
+      animation: fadeInBody 1s ease-in-out;
+    }
+
+    @keyframes fadeInBody {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes slideInUp {
+      0% { opacity: 0; transform: translateY(40px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    header {
+      background: #b30000;
+      color: white;
+      width: 100%;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .header-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      font-size: 1.75rem;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+    }
+
+    nav {
+      flex: 1;
+    }
+
+    .nav-menu {
+      list-style: none;
+      display: flex;
+      justify-content: flex-end;
+      gap: 1.5rem;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-menu li a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .nav-menu li a:hover {
+      color: #ffd6d6;
+    }
+
+    .menu-toggle {
+      display: none;
+      font-size: 1.8rem;
+      color: white;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .menu-toggle {
+        display: block;
+      }
+
+      nav {
+        width: 100%;
+      }
+
+      .nav-menu {
+        flex-direction: column;
+        align-items: center;
+        background: #b30000;
+        width: 100%;
+        display: none;
+        padding: 1rem 0;
+      }
+
+      .nav-menu.show {
+        display: flex;
+      }
+    }
+
+    .hero {
+      background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+        url('https://images.unsplash.com/photo-1581094278069-47a3c87c77d6') center/cover no-repeat;
+      color: white;
+      text-align: center;
+      padding: 5rem 2rem;
+      animation: slideInUp 1s ease forwards;
+    }
+    .hero h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+    .hero p {
+      font-size: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+    .cta {
+      background: #ffd6d6;
+      color: #b30000;
+      padding: 0.75rem 1.5rem;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+      animation: pulse 2s infinite;
+      transition: transform 0.3s ease;
+    }
+    .cta:hover {
+      background: #ffcccc;
+      transform: scale(1.05);
+    }
+
+    .preview-section, .blog-preview, .reviews, .contact-preview, footer {
+      animation: slideInUp 1s ease forwards;
+      opacity: 0;
+      animation-fill-mode: forwards;
+    }
+
+    .preview-section:nth-of-type(2) { animation-delay: 0.2s; }
+    .preview-section:nth-of-type(3) { animation-delay: 0.4s; }
+    .blog-preview { animation-delay: 0.6s; }
+    .reviews { animation-delay: 0.8s; }
+    .contact-preview { animation-delay: 1s; }
+    footer { animation-delay: 1.2s; }
+
+    .preview-section {
+      padding: 4rem 1rem;
+      text-align: center;
+    }
+
+    .preview-section h2 {
+      font-size: 2.25rem;
+      color: #b30000;
+      margin-bottom: 1rem;
+    }
+
+    .preview-section p {
+      font-size: 1.1rem;
+      color: #660000;
+      margin-bottom: 1.5rem;
+    }
+
+    .btn {
+      background: #cc0000;
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+      display: inline-block;
+      margin-top: 1rem;
+      transition: transform 0.3s ease;
+    }
+
+    .btn:hover {
+      background: #990000;
+      transform: scale(1.05);
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .service-card {
+      background: #ffe6e6;
+      padding: 2rem;
+      border-radius: 10px;
+      color: #800000;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(255,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .service-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 8px 16px rgba(255,0,0,0.2);
+    }
+
+    .blog-cards {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .blog-card {
+      background: #ffe6e6;
+      border-radius: 10px;
+      width: 300px;
+      overflow: hidden;
+      box-shadow: 0 4px 6px rgba(255,0,0,0.2);
+      transition: transform 0.3s ease;
+    }
+
+    .blog-card:hover {
+      transform: translateY(-8px);
+    }
+
+    .blog-card img {
+      width: 100%;
+      display: block;
+    }
+
+    .blog-card h4 {
+      padding: 1rem;
+      font-size: 1.1rem;
+      color: #800000;
+    }
+
+    .blog-card a {
+      display: block;
+      background: #cc0000;
+      color: white;
+      padding: 0.75rem;
+      text-align: center;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .reviews {
+      background: #ffe6e6;
+      padding: 4rem 1rem;
+      text-align: center;
+    }
+
+    .review-card, .review-form {
+      background: #fff0f0;
+      margin: 1rem auto;
+      padding: 1.5rem;
+      max-width: 600px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(255,0,0,0.1);
+    }
+
+    .review-card:hover {
+      transform: scale(1.02);
+      transition: transform 0.3s ease;
+    }
+
+    .review-card h4 {
+      color: #b30000;
+      margin-bottom: 0.5rem;
+    }
+
+    .review-form input, .review-form textarea {
+      width: 100%;
+      padding: 0.75rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ff9999;
+      border-radius: 5px;
+    }
+
+    .review-form button {
+      background: #cc0000;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    footer {
+      background: #800000;
+      color: white;
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+
+    .social-icons a {
+      color: white;
+      margin: 0 0.5rem;
+      font-size: 1.2rem;
+      transition: transform 0.3s ease;
+    }
+
+    .social-icons a:hover {
+      color: #ffd6d6;
+      transform: scale(1.2);
+    }
+    a{
+      text-decoration: none;
+      color:white;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container header-inner">
+      <div class="logo">🚚 Packer & Movers</div>
+      <nav>
+        <ul class="nav-menu">
+          <li><a href="#home">Home</a></li>
+          
+          <li><a href="about.html">About</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="blog.html">Blog</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="review.html">review</a></li>
+        </ul>
+      </nav>
+      <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    </div>
+  </header>
+
+  <section class="hero" id="home">
+    <div class="container">
+      <h1>Fast & Secure Relocation Services</h1>
+      <p>We move it all with care — home, office, vehicle and more.</p>
+      <a href="services.html" class="cta">Explore Services</a>
+    </div>
+  </section>
+
+  <section class="preview-section">
+    <div class="container">
+      <h2>About Us</h2>
+      <p>Trusted Packers & Movers with 10+ years of experience. Our expert team ensures safe, fast, and smooth relocation solutions.</p>
+      <a href="about.html" class="btn">Learn More</a>
+    </div>
+  </section>
+
+  <section class="preview-section">
+    <div class="container">
+      <h2>Our Services</h2>
+      <div class="services-grid">
+        <div class="service-card"><i class="fas fa-home fa-2x"></i><h3>Home Shifting</h3></div>
+        <div class="service-card"><i class="fas fa-building fa-2x"></i><h3>Office Relocation</h3></div>
+        <div class="service-card"><i class="fas fa-box-open fa-2x"></i><h3>Packing & Unpacking</h3></div>
+        <div class="service-card"><i class="fas fa-truck-moving fa-2x"></i><h3>Vehicle Transport</h3></div>
+      </div>
+      <a href="services.html" class="btn">View All Services</a>
+    </div>
+  </section>
+
+  <section class="preview-section blog-preview">
+    <div class="container">
+      <h2>From Our Blog</h2>
+      <div class="blog-cards">
+        <div class="blog-card">
+          <img src="p1.jpg" alt="Blog Image">
+          <h4>Packing Tips That Save Time</h4>
+          <a href="blog.html">Read More</a>
+        </div>
+        <div class="blog-card">
+          <img src="p2.jpg" alt="Blog Image">
+          <h4>What to Expect on Moving Day</h4>
+          <a href="blog.html">Read More</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="reviews">
+    <div class="container">
+      <h2>Customer Reviews</h2>
+      <div class="review-card">
+        <h4>Priya S.</h4>
+        <p>"Excellent service! My items arrived safely and on time. Highly recommended!"</p>
+      </div>
+      <div class="review-card">
+        <h4>Rahul M.</h4>
+        <p>"Professional and affordable. Their team handled everything smoothly."</p>
+      </div>
+      <div class="review-form">
+        <h3 style="color:#b30000; margin-bottom:1rem;">Write a Review</h3>
+        
+          <button type="submit" ><a href="review.html">Submit Review</a></button>
+       
+      </div>
+    </div>
+  </section>
+
+  <section class="preview-section contact-preview">
+    <div class="container">
+      <h2>Get in Touch</h2>
+      <p>Need help with relocation? Contact us now for a free consultation.</p>
+      <a href="contact.html" class="btn">Contact Us</a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 Packer & Movers. All rights reserved.</p>
+      <div class="social-icons">
+        <a href="#"><i class="fab fa-facebook"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function toggleMenu() {
+      document.querySelector('.nav-menu').classList.toggle('show');
+    }
+  </script>
+
+</body>
+</html>
